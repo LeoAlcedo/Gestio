@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cuadro 1</title>
+
+<!-- Librerías para PDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<style>
+    body{
+        margin:0;
+        font-family: Arial, sans-serif;
+        background:#ffffff;
+        display:flex;
+        height:100vh;
+    }
+
+    /* Header */
+    header{
+        width:100%;
+        height:60px;
+        background:#0f1d3a;
+        display:flex;
+        align-items:center;
+        padding:0 20px;
+        box-sizing:border-box;
+        position:fixed;
+        top:0;
+        left:0;
+        z-index:10;
+        color:white;
+    }
+
+    .btn-registrame{
+        background:#e74a1a;
+        color:white;
+        padding:10px 20px;
+        border:none;
+        border-radius:20px;
+        font-size:15px;
+        cursor:pointer;
+    }
+
+    /* Sidebar */
+    .sidebar{
+        width:220px;
+        background:#f3f5f9;
+        padding:20px 10px;
+        border-right:1px solid #dcdcdc;
+        overflow-y:auto;
+        margin-top:60px;
+    }
+
+    .icon-block{
+        display:flex;
+        flex-direction:row;
+        align-items:center;
+        gap:10px;
+        margin-bottom:12px;
+        padding:8px;
+        cursor:pointer;
+        border-radius:6px;
+        transition:0.15s;
+        background:transparent;
+    }
+
+    .icon-block:hover{
+        background:#e0e6f1;
+    }
+
+    .icon-block div{
+        font-size:20px;
+        width:28px;
+        text-align:center;
+    }
+
+    .icon-block span{
+        font-size:14px;
+        font-weight:bold;
+    }
+
+    .sidebar h3{
+        font-size:14px;
+        margin:18px 0 8px;
+    }
+
+    .box{
+        width:100%;
+        height:100px;
+        border:1px solid #c9c9c9;
+        margin-bottom:18px;
+        border-radius:4px;
+        background:white;
+        padding:10px;
+        box-sizing:border-box;
+        resize:none;
+    }
+
+    .btn-agregar{
+        width: 100%;
+        background:#e74a1a;
+        color:white;
+        padding:12px 0;
+        border:none;
+        border-radius:20px;
+        font-size:16px;
+        cursor:pointer;
+        margin-top:10px;
+        display:none; /* permanece oculto hasta click en menu */
+    }
+
+    .btn-modificar{
+        width: 100%;
+        background:#0275d8;
+        color:white;
+        padding:12px 0;
+        border:none;
+        border-radius:20px;
+        font-size:16px;
+        cursor:pointer;
+        margin-top:10px;
+        display:none;
+    }
+
+    .main{
+        flex:1;
+        padding:20px;
+        overflow:auto;
+        margin-top:60px;
+    }
+
+    .contenedor-tabla{
+        width:100%;
+        background:white;
+        padding:20px;
+        border-radius:8px;
+        box-shadow:0px 2px 8px rgba(0,0,0,0.15);
+        position: relative;
+    }
+
+    table{
+        width:100%;
+        border-collapse:collapse;
+        font-size:15px;
+    }
+
+    thead{
+        background:#012a63;
+        color:white;
+    }
+
+    thead th{
+        padding:12px;
+        border:1px solid #dddddd;
+        text-align:left;
+    }
+
+    tbody td{
+        padding:12px;
+        border:1px solid #c9c9c9;
+    }
+
+    tr:hover{
+        background:#f2f7ff;
+        cursor:pointer;
+    }
+
+    .fila-contenedor{
+        position: relative;
+    }
+
+    .btn-flotante-eliminar{
+        position:absolute;
+        left:-35px;
+        top:50%;
+        transform:translateY(-50%);
+        background:#ff3b30;
+        color:white;
+        border:none;
+        width:34px;
+        height:34px;
+        border-radius:50%;
+        display:none;
+        cursor:pointer;
+        font-size:20px;
+        line-height:34px;
+        box-shadow:0 1px 3px rgba(0,0,0,0.2);
+    }
+
+    .btn-modificar-izq{
+        position:absolute;
+        right:-95px;
+        top:50%;
+        transform:translateY(-50%);
+        background:#0275d8;
+        color:white;
+        border:none;
+        padding:8px 12px;
+        border-radius:6px;
+        display:none;
+        cursor:pointer;
+        box-shadow:0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .fila-contenedor:hover .btn-flotante-eliminar{ display:inline-block; }
+    .fila-contenedor.seleccionada .btn-modificar-izq{ display:inline-block; }
+    .fila-contenedor.seleccionada{ outline:2px solid rgba(2,117,216,0.15); background:#eef7ff; }
+
+    .pdf-wrap{ display:flex; justify-content:flex-end; margin-top:16px; }
+    .btn-pdf{ background:#e74a1a; color:white; padding:10px 22px; border:none; border-radius:20px; font-size:15px; cursor:pointer; }
+    .btn-pdf:hover{ background:#cf4218; }
+
+    /* espacio para botones flotantes */
+    .contenedor-tabla{ padding-right:120px; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+    <div style="font-size:22px; font-weight:bold;">Cuadro<span style='color:#ff5c32;'>1</span></div>
+    <div style="flex:1;"></div>
+   <a href="/Usuario.html"> <button class="btn-registrame">Volver</button></a>
+</header>
+
+<!-- SIDEBAR -->
+<div class="sidebar" id="menu">
+
+    <!-- icon-blocks solicitados como botones -->
+    <a class="icon-block" id="btnCuadro1" href="/cuadro.html"><div>🔳</div><span>Cuadro 1</span></a>
+  
+     <!--............................................. -->
+    <a class="icon-block" id="btnCuadro2" href="/princip.html">  <div>🔳</div> <span>Cuadro 2</span>
+</a>
+
+
+  <!--............................................. -->
+
+    <a class="icon-block" id="btnCuadro3" href="/prin.html" ><div>🔳</div><span>Cuadro 3</span></a>
+
+    <hr style="margin:12px 0; width:100%;"> 
+
+    <h3>Código</h3>
+    <textarea id="codigo" class="box"></textarea>
+
+    <h3>Usuario</h3>
+    <textarea id="usuario" class="box"></textarea>
+
+    <h3>Área</h3>
+    <textarea id="area" class="box"></textarea>
+
+    <h3>Fecha y hora de incidencia</h3>
+    <textarea id="fecha" class="box"></textarea>
+
+    <h3>Síntomas</h3>
+    <textarea id="sintomas" class="box"></textarea>
+
+    <button class="btn-agregar" id="btnAgregar">Agregar</button>
+    <button class="btn-modificar" id="btnModificar" style="display:none;">Modificar datos</button>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+    <div class="contenedor-tabla" id="tabla-contenedor">
+        <table id="tabla">
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Usuario</th>
+                    <th>Área</th>
+                    <th>Fecha y hora de Incidencia</th>
+                    <th>Síntomas</th>
+                </tr>
+            </thead>
+
+            <!-- <-- ID necesario para scripts -->
+            <tbody id="tablaDatos">
+            </tbody>
+        </table>
+
+        <div class="pdf-wrap">
+            <button id="btnPDF" class="btn-pdf">Convertir a PDF</button>
+        </div>
+    </div>
+</div>
+
+<!-- script principal (archivo externo) -->
+<script src="scripts12.js"></script>
+
+<!-- Mostrar botón Agregar cuando se hace clic en el menú / sidebar -->
+<script>
+document.getElementById("menu").addEventListener("click", function() {
+    document.getElementById("btnAgregar").style.display = "block";
+});
+</script>
+
+</body>
+</html>

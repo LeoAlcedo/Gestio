@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Cuadro 3 - CRUD (JS + PHP)</title>
+
+<!-- ====================================== -->
+<!--  LIBRERÍAS NECESARIAS PARA EL PDF      -->
+<!-- ====================================== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<style>
+    body{ margin:0; font-family: Arial, sans-serif; background:#ffffff; display:flex; height:100vh; }
+    header{ width:100%; height:60px; background:#0f1d3a; display:flex; align-items:center; padding:0 20px; box-sizing:border-box; position:fixed; top:0; left:0; z-index:10; color:white; }
+    header .titulo{ font-size:22px; font-weight:bold; }
+    header .spacer{ flex:1; }
+    header button { background:#e74a1a; color:white; border:none; padding:10px 22px; border-radius:20px; font-size:15px; cursor:pointer; }
+
+    .sidebar{ width:320px; background:#f3f5f9; padding:20px 10px; border-right:1px solid #dcdcdc; overflow-y:auto; margin-top:60px; box-sizing:border-box; }
+    .icon-block{ display:flex; flex-direction:row; align-items:center; gap:10px; margin-bottom:25px; padding:8px; cursor:pointer; border-radius:6px; transition:0.3s; }
+    .icon-block:hover{ background:#e0e6f1; }
+    .icon-block div{ font-size:30px; width:35px; text-align:center; }
+    .icon-block span{ font-size:15px; font-weight:bold; }
+
+    .sidebar h3{ font-size:14px; margin:18px 0 8px; }
+    .box{ width:100%; min-height:64px; border:1px solid #c9c9c9; margin-bottom:12px; border-radius:4px; background:white; padding:8px; box-sizing:border-box; resize:vertical; font-size:14px; }
+
+    .btn-agregar{ width:100%; background:#e74a1a; color:white; padding:12px 0; border:none; border-radius:20px; font-size:16px; cursor:pointer; margin-top:10px; }
+
+    .main{ flex:1; padding:20px; overflow:auto; margin-top:60px; box-sizing:border-box; }
+    .contenedor-tabla{ width:100%; background:white; padding:20px; border-radius:8px; box-shadow:0px 2px 8px rgba(0,0,0,0.15); position:relative; }
+    table{ min-width:1100px; width:100%; border-collapse:collapse; font-size:14px; }
+    thead{ background:#012a63; color:white; }
+    thead th{ padding:12px; border:1px solid #dddddd; text-align:left; vertical-align:middle; }
+    tbody td{ padding:10px 12px; border:1px solid #c9c9c9; vertical-align:middle; }
+    tr:hover{ background:#f2f7ff; cursor:default; }
+
+    .fila-contenedor{ position:relative; }
+    .btn-flotante-eliminar{ position:absolute; left:-38px; top:50%; transform:translateY(-50%); background:#ff3b30; color:#fff; border:none; width:34px; height:34px; border-radius:50%; display:none; cursor:pointer; font-size:18px; line-height:34px; box-shadow:0 2px 5px rgba(0,0,0,0.2); }
+    .btn-modificar-izq{ position:absolute; right:-110px; top:50%; transform:translateY(-50%); background:#0275d8; color:white; border:none; padding:8px 12px; border-radius:6px; display:none; cursor:pointer; box-shadow:0 2px 5px rgba(0,0,0,0.15); }
+
+    .fila-contenedor:hover .btn-flotante-eliminar{ display:inline-block; }
+    .fila-contenedor.seleccionada .btn-modificar-izq{ display:inline-block; }
+    .fila-contenedor.seleccionada{ outline:2px solid rgba(2,117,216,0.12); background:#eef7ff; }
+
+    .pdf-wrap{ display:flex; justify-content:flex-end; margin-top:14px; }
+    .btn-pdf{ background:#e74a1a; color:white; padding:10px 18px; border:none; border-radius:20px; cursor:pointer; }
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="titulo">Cuadro<span style='color:#ff5c32;'>3</span></div>
+    <div class="spacer"></div>
+    <a href="../1/Usuario.html">
+   <a href="/Usuario.html"> <button class="btn-registrame">Volver</button></a>
+</a> 
+</header>
+
+<div class="sidebar" id="menu">
+    <a class="icon-block" id="ic1"  href="/cuadro.html" ><div>🔳</div><span>Cuadro 1</span></a>
+    <a class="icon-block" id="ic2" href="/princip.html"><div>🔳</div><span>Cuadro 2</span></a>
+    <a class="icon-block" id="ic3"href="/prin.html"><div>🔳</div><span>Cuadro 3</span></a>
+
+    <hr style="margin:12px 0; width:100%;" />
+
+    <h3>Codigo</h3><textarea id="codigo" class="box"></textarea>
+    <h3>Usuario</h3><textarea id="usuario" class="box"></textarea>
+    <h3>Area</h3><textarea id="area" class="box"></textarea>
+    <h3>Fecha y hora de incidencia</h3><textarea id="fechaInc" class="box"></textarea>
+    <h3>Sintomas</h3><textarea id="sintomas" class="box"></textarea>
+    <h3>Categoria</h3><textarea id="categoria" class="box"></textarea>
+    <h3>Responsable</h3><textarea id="responsable" class="box"></textarea>
+    <h3>Fecha y hora Resolución</h3><textarea id="fechaRes" class="box"></textarea>
+    <h3>Actividad Resolución</h3><textarea id="actividadRes" class="box"></textarea>
+    <h3>Fecha y Hora Cierre</h3><textarea id="cierre" class="box"></textarea>
+
+    <button id="btnAgregar" class="btn-agregar">Agregar</button>
+</div>
+
+<div class="main">
+    <div class="contenedor-tabla" id="tabla-contenedor">
+        <table id="tabla">
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Usuario</th>
+                    <th>Área</th>
+                    <th>Fecha y hora De Incidencia</th>
+                    <th>Síntomas</th>
+                    <th>Categoría</th>
+                    <th>Responsable</th>
+                    <th>Fecha y hora Resolución</th>
+                    <th>Actividad Resolución</th>
+                    <th>Fecha y Hora Cierre</th>
+                </tr>
+            </thead>
+            <tbody id="tablaDatos"></tbody>
+        </table>
+
+        <div class="pdf-wrap">
+            <button id="btnPDF" class="btn-pdf">Convertir a PDF</button>
+        </div>
+    </div>
+</div>
+
+<script src="funcion.js"></script>
+
+
+
+
+<!-- AQUI................................... -->
+<script>
+// Ir a Cuadro 1
+//document.getElementById("ic1").onclick = () => {
+  //  window.location.href = "../Cuadro 1/cuadro1.html";
+//};
+
+// Ir a Cuadro 2
+//document.getElementById("ic2").onclick = () => {
+  //  window.location.href = "../Cuadro_2/princip.html";
+//};
+
+// Ir a Cuadro 3
+//document.getElementById("ic3").onclick = () => {
+  //  window.location.href = "prin.html";
+//};
+</script>
+
+
+
+
+</body>
+</html>

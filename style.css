@@ -1,0 +1,73 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #eef1f5;
+}
+
+/* CONTENEDOR PRINCIPAL */
+.container {
+    display: flex;
+    height: 100vh;
+}
+
+/* PANEL LATERAL */
+.sidebar {
+    width: 250px;
+    background: #2c3e50;
+    color: white;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.sidebar h2 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* ITEMS DE NAVEGACIÓN */
+.nav-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 10px;
+    margin-bottom: 15px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+.nav-item:hover {
+    background: #34495e;
+}
+
+.nav-item img {
+    width: 28px;
+    margin-right: 12px;
+}
+
+/* CONTENIDO PRINCIPAL */
+.content {
+    flex: 1;
+    padding: 40px;
+}
+
+.content h1 {
+    margin-bottom: 30px;
+}
+
+/* CUADROS EDITABLES */
+.editable-box {
+    width: 100%;
+    background: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    border: 2px solid #ccc;
+    min-height: 80px;
+    outline: none;
+    transition: 0.2s;
+}
+
+.editable-box:focus {
+    border-color: #2980b9;
+    box-shadow: 0px 0px 8px rgba(41, 128, 185, 0.3);
+}

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Login Diseño</title>
+
+<style>
+    body{
+        font-family: Arial, sans-serif;
+        background: #FED9B7;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        flex-direction: column;
+    }
+
+    .circle-container{
+        width: 140px;
+        height: 140px;
+        border: 3px solid #9e9e9e;   /* Borde gris */
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #5bb8ff;   /* Azul del fondo */
+    }
+
+    .circle-container img{
+        width: 70px;
+        opacity: 0.9;
+    }
+
+    .btn-login{
+        margin-top: 20px;
+        background-color: #5bb8ff;
+        border: none;
+        color: white;
+        padding: 12px 40px;
+        border-radius: 30px;
+        font-size: 16px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    .btn-login:hover{
+        opacity: 0.8;
+    }
+</style>
+
+</head>
+<body>
+
+    <div class="circle-container">
+        <!-- Ícono de usuario (puedes reemplazarlo si deseas) -->
+        <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="Usuario">
+    </div>
+
+     <a href="/cuadro.html">
+    <button class="btn-login">Iniciar Sesión</button>
+</a>
+</body>
+</html>

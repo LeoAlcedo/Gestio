@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diseño Completo</title>
+
+<style>
+    body{
+        margin:0;
+        font-family: Arial, sans-serif;
+        background:#ffffff;
+        display:flex;
+        height:100vh;
+    }
+
+    /* Header */
+    header{
+        width:100%;
+        height:60px;
+        background:#0f1d3a;
+        display:flex;
+        align-items:center;
+        padding:0 20px;
+        box-sizing:border-box;
+        position:fixed;
+        top:0;
+        left:0;
+        z-index:10;
+        color:white;
+    }
+
+    /* Sidebar */
+    .sidebar{
+        width:220px;
+        background:#f3f5f9;
+        padding:20px 10px;
+        border-right:1px solid #dcdcdc;
+        overflow-y:auto;
+        margin-top:60px;
+    }
+
+    /* OPCIÓN B: Icono izquierda, texto derecha */
+    .icon-block{
+        display:flex;
+        flex-direction:row;
+        align-items:center;
+        gap:10px;
+        margin-bottom:25px;
+        padding:8px;
+        cursor:pointer;
+        border-radius:6px;
+        transition:0.3s;
+    }
+
+    .icon-block:hover{
+        background:#e0e6f1;
+    }
+
+    .icon-block div{
+        font-size:30px;
+        width:35px;
+        text-align:center;
+    }
+
+    .icon-block span{
+        font-size:15px;
+        font-weight:bold;
+    }
+
+    /* Cuadros de texto */
+    .sidebar h3{
+        font-size:14px;
+        margin:25px 0 10px;
+    }
+
+    .box{
+        width:100%;
+        height:120px;
+        border:1px solid #c9c9c9;
+        margin-bottom:25px;
+        border-radius:4px;
+        background:white;
+        padding:10px;
+        box-sizing:border-box;
+        resize:none;
+    }
+
+    /* Main Content */
+    .main{
+        flex:1;
+        padding:20px;
+        overflow:auto;
+        margin-top:60px;
+    }
+
+    .contenedor-tabla{
+        width:100%;
+        background:white;
+        padding:20px;
+        border-radius:8px;
+        box-shadow:0px 2px 8px rgba(0,0,0,0.15);
+    }
+
+    table{
+        width:100%;
+        border-collapse:collapse;
+        font-size:15px;
+    }
+
+    thead{
+        /* NOTA: El color #012a63 es muy similar al de la imagen */
+        background:#012a63; 
+        color:white;
+    }
+
+    thead th{
+        padding:12px;
+        border:1px solid #dddddd;
+        text-align:left;
+    }
+
+    tbody td{
+        padding:12px;
+        border:1px solid #c9c9c9;
+        height:35px;
+    }
+
+    .btn-naranja{
+        background:#e74a1a;
+        color:white;
+        padding:14px 32px;
+        border:none;
+        border-radius:30px;
+        font-size:16px;
+        cursor:pointer;
+        margin-top:30px;
+        float:right;
+    }
+
+</style>
+</head>
+
+<body>
+
+<header>
+    <div style="font-size:22px; font-weight:bold;">Cuadro<span style='color:#ff5c32;'>2</span></div>
+    <div style="flex:1;"></div>
+    <button style="background:#e74a1a; color:white; border:none; padding:10px 22px; border-radius:20px; font-size:15px; cursor:pointer;">
+        Registrarme
+    </button>
+</header>
+
+<div class="sidebar">
+
+    <div class="icon-block">
+        <div>🔳</div>
+        <span>Cuadro 1</span>
+    </div>
+
+    <div class="icon-block">
+        <div>🔳</div>
+        <span>Cuadro 2</span>
+    </div>
+
+    <div class="icon-block">
+        <div>🔳</div>
+        <span>Cuadro 3</span>
+    </div>
+
+    <hr style="margin:20px 0; width:100%;">
+
+    <h3>Codigo</h3>
+    <textarea class="box"></textarea>
+
+    <h3>Incidencia</h3>
+    <textarea class="box"></textarea>
+
+    <h3>Impacto</h3>
+    <textarea class="box"></textarea>
+
+    <h3>Urgencia</h3>
+    <textarea class="box"></textarea>
+
+   <h3>Nivel prioridad</h3>
+    <textarea class="box"></textarea>
+
+</div>
+
+<div class="main">
+
+    <div class="contenedor-tabla">
+        <table>
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Incidencia</th>
+                    <th>Impacto</th>
+                    <th>Urgencia</th>
+                    <th>Nivel prioridad</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td><td></td></tr>
+            </tbody>
+        </table>
+    </div>
+    
+    
+    <button class="btn-naranja">Más diseños</button>
+
+</div>
+
+</body>
+</html>
